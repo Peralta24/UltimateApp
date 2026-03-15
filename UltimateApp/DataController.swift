@@ -10,6 +10,8 @@ internal import Combine
 class DataController: ObservableObject {
 
     let container: NSPersistentContainer
+    @Published var selectedFilter: Filter? = Filter.all
+    
     static var preview: DataController = {
         let dataController = DataController(inMemory: true)
         dataController.createSampleData()
@@ -40,7 +42,7 @@ class DataController: ObservableObject {
                 let issue = Issue(context: viewContext)
                 issue.title = "Issue\(i)-\(j)"
                 issue.content = "Description goes here"
-                issue.creationDate = .now
+                issue.creationDate = Date.now
                 issue.completed = Bool.random()
                 issue.priority = Int16.random(in: 0...2)
                 tag.addToIssues(issue)
