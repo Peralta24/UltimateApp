@@ -6,12 +6,17 @@
 //
 
 import SwiftUI
+internal import CoreData
 
 @main
 struct UltimateAppApp: App {
+    @StateObject var dataController = DataController()
+    
     var body: some Scene {
         WindowGroup {
             ContentView()
+                .environment(\.managedObjectContext, dataController.container.viewContext)
+                .environmentObject(dataController)
         }
     }
 }
