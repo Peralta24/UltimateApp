@@ -1,0 +1,220 @@
+{
+  "main": {
+    "id": "62fdbac7af4811bd",
+    "type": "split",
+    "children": [
+      {
+        "id": "7785b4fbc463bb85",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "671f02b200dd9e6e",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "00 - Home/UltimateApp Documentation.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "UltimateApp Documentation"
+            }
+          },
+          {
+            "id": "8bfae573910ec193",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "07 - Dev Log/Dev Log.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Dev Log"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "3613e9b8004b6401",
+    "type": "split",
+    "children": [
+      {
+        "id": "d6b6b82ce29f9f68",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "f54aae9e30572ca3",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "byModifiedTime",
+                "autoReveal": false
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "92171db5e8894639",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "9c457071b9ddfc23",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "ccc3f2db5e45cead",
+    "type": "split",
+    "children": [
+      {
+        "id": "8bae7811a2de529b",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "5310c050ad89a7e4",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "07 - Dev Log/Dev Log.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Dev Log"
+            }
+          },
+          {
+            "id": "52b600f2877e0695",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "07 - Dev Log/Dev Log.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Dev Log"
+            }
+          },
+          {
+            "id": "070b00562272fe6a",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "e775d840ebcc5bcd",
+            "type": "leaf",
+            "state": {
+              "type": "all-properties",
+              "state": {
+                "sortOrder": "frequency",
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-archive",
+              "title": "All properties"
+            }
+          },
+          {
+            "id": "27ccfc91d74ff3e2",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "07 - Dev Log/Dev Log.md",
+                "followCursor": false,
+                "showSearch": false,
+                "searchQuery": ""
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Dev Log"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300,
+    "collapsed": true
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false
+    }
+  },
+  "active": "8bfae573910ec193",
+  "lastOpenFiles": [
+    "02 - Architecture/Architecture.md",
+    "07 - Dev Log/Dev Log.md",
+    "01 - Project/Roadmap.md",
+    "06 - Decisions/ADR 001 - Project Architecture.md",
+    "01 - Project/Project Overview.md",
+    "00 - Home/UltimateApp Documentation.md",
+    "00 - Home.md",
+    "00 - Home",
+    "08 - Resources",
+    "07 - Dev Log",
+    "06 - Decisions",
+    "05 - Models",
+    "04 - API",
+    "03 - Features",
+    "02 - Architecture",
+    "01 - Project"
+  ]
+}
