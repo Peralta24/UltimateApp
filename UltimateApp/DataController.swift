@@ -5,12 +5,16 @@
 //  Created by Jose Rafael Peralta Martinez  on 01/07/26.
 //
 
-import CoreData
+internal import CoreData
 internal import Combine
+import SwiftUI
 
 class DataController: ObservableObject {
+    
     let container: NSPersistentCloudKitContainer
     
+    @Published var selectedFilter: Filter? = Filter.all
+
     static var preview: DataController = {
         let dataController = DataController(inMemory: true)
         dataController.createSampleData()
@@ -33,14 +37,14 @@ class DataController: ObservableObject {
     func createSampleData() {
         let viewContext = container.viewContext
         
-        for i in 1...5 {
+        for tagIndex in 1...5 {
             let tag = Tag(context: viewContext)
             tag.id = UUID()
-            tag.name = "Tag \(i)"
+            tag.name = "Tag \(tagIndex)"
             
-            for j in 1...10 {
+            for issueIndex in 1...10 {
                 let issue = Issue(context: viewContext)
-                issue.title = "Issue \(i) - \(j)"
+                issue.title = "Issue \(tagIndex) - \(issueIndex)"
                 issue.content = "Description goes here"
                 issue.creationDate = .now
                 issue.completed = Bool.random()

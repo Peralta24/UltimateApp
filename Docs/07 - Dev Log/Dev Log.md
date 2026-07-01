@@ -196,6 +196,275 @@ func deleteAll() {
 .environmentObject(dataController)
 ```
 
+### Empezando con la UI
+
+#### NavigationSplitView
+
+- Se comenzó a construir la interfaz principal utilizando `NavigationSplitView`.
+- Este componente permite dividir la navegación en tres áreas principales:
+
+| Sección | Función |
+|---|---|
+| **Sidebar** | Muestra filtros, secciones o categorías. |
+| **Content View** | Muestra el contenido principal seleccionado. |
+| **Detail View** | Muestra los detalles del elemento seleccionado. |
+
+La idea principal es que la aplicación permita visualizar fácilmente todos los issues, los issues recientes y los issues filtrados por etiquetas.
+
+---
+
+#### Creación del modelo Filter
+
+- Se creó una estructura llamada `Filter`.
+- Esta estructura representa los filtros que se mostrarán en la barra lateral.
+- Cada filtro contiene un nombre, un icono y, opcionalmente, una etiqueta (`Tag`) asociada.
+
+```swift
+struct Filter: Identifiable, Hashable {
+    var id: UUID
+    var name: String
+    var icon: String
+    var minModificationDate = Date.distantPast
+    var tag: Tag?
+}
+```
+
+---
+
+#### Propiedades del filtro
+
+| Propiedad | Descripción |
+|---|---|
+| `id` | Identificador único del filtro. |
+| `name` | Nombre que se mostrará en pantalla. |
+| `icon` | Icono del sistema utilizado en la interfaz. |
+| `minModificationDate` | Fecha mínima para mostrar issues recientes. |
+| `tag` | Etiqueta opcional usada para filtrar issues por categoría. |
+
+`minModificationDate` se inicializa con `Date.distantPast`, lo que permite mostrar todos los issues por defecto, a menos que se indique una fecha más reciente.
+
+---
+
+#### Filtros inteligentes
+
+- Se agregaron dos filtros principales para la aplicación:
+
+```swift
+static var all = Filter(id: UUID(), name: "All Issues", icon: "tray")
+
+static var recent = Filter(
+    id: UUID(),
+    name: "Recent Issues",
+    icon: "clock",
+    minModificationDate: .now.addingTimeInterval(86400 * -7)
+)
+```
+
+| Filtro | Función |
+|---|---|
+| `All Issues` | Muestra todos los issues. |
+| `Recent Issues` | Muestra los issues modificados en los últimos 7 días. |
+
+El filtro de issues recientes utiliza `86400 * -7`, ya que un día tiene 86,400 segundos. Esto permite calcular aproximadamente los últimos siete días.
+
+---
+
+#### Personalización de Hashable y Equatable
+
+- Se personalizó la comparación entre filtros.
+- Aunque un filtro tenga nombre, icono, fecha o etiqueta, lo único importante para identificarlo es su `id`.
+
+```swift
+func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+}
+
+static func ==(lhs: Filter, rhs: Filter) -> Bool {
+    lhs.id == rhs.id
+}
+```
+
+Esto evita comportamientos extraños si una etiqueta cambia con el tiempo.
+
+---
+
+#### Selección del filtro actual
+
+- Se agregó una propiedad publicada dentro de `DataController` para almacenar el filtro seleccionado por el usuario:
+
+```swift
+@Published var selectedFilter: Filter? = Filter.all
+```
+
+Esto permite que SwiftUI actualice la interfaz cuando el usuario seleccione un filtro diferente.
+
+---
+
+#### Configuración de SidebarView
+
+- En `SidebarView` se lee la instancia compartida de `DataController` desde el entorno:
+
+```swift
+@EnvironmentObject var dataController: DataController
+```
+
+- También se creó un arreglo con los filtros inteligentes:
+
+```swift
+let smartFilters: [Filter] = [.all, .recent]
+```
+
+---
+
+#### Lista de filtros inteligentes
+
+- Se creó una lista para mostrar los filtros dentro del sidebar:
+
+```swift
+List(selection: $dataController.selectedFilter) {
+    Section("Smart Filters") {
+        ForEach(smartFilters) { filter in
+            NavigationLink(value: filter) {
+                Label(filter.name, systemImage: filter.icon)
+            }
+        }
+    }
+}
+```
+
+Con esto se puede seleccionar un filtro desde la barra lateral y almacenar esa selección dentro del `DataController`.
+
+---
+
+#### Soporte para previews
+
+- Para que las vistas previas de Xcode funcionen correctamente, se agregó el `DataController` como objeto de entorno:
+
+```swift
+static var previews: some View {
+    SidebarView()
+        .environmentObject(DataController.preview)
+}
+```
+
+---
+
+#### Carga de etiquetas desde Core Data
+
+- Como ya existe una entidad llamada `Tag`, se agregó una consulta para cargar todas las etiquetas en orden alfabético:
+
+```swift
+@FetchRequest(sortDescriptors: [SortDescriptor(\.name)]) var tags: FetchedResults<Tag>
+```
+
+`@FetchRequest` permite que SwiftUI actualice automáticamente la interfaz cuando se agregan, eliminan o modifican etiquetas.
+
+---
+
+#### Conversión de Tag a Filter
+
+- Las etiquetas de Core Data no se muestran directamente.
+- Primero se convierten en filtros para que puedan usarse igual que los filtros inteligentes.
+
+```swift
+var tagFilters: [Filter] {
+    tags.map { tag in
+        Filter(
+            id: tag.id ?? UUID(),
+            name: tag.name ?? "No name",
+            icon: "tag",
+            tag: tag
+        )
+    }
+}
+```
+
+Esto permite que cada etiqueta tenga:
+
+- Un identificador.
+- Un nombre.
+- Un icono.
+- Una referencia a la entidad `Tag`.
+
+---
+
+#### Nota sobre opcionales en Core Data
+
+- Aunque un atributo sea marcado como obligatorio dentro del modelo de Core Data, Xcode puede generarlo como opcional en Swift.
+- Esto sucede porque Core Data valida los datos principalmente al momento de guardar el contexto.
+- Por eso se utilizan valores por defecto como:
+
+```swift
+tag.id ?? UUID()
+tag.name ?? "No name"
+```
+
+Esto evita errores cuando Swift intenta leer valores opcionales.
+
+---
+
+#### Mostrar etiquetas en el sidebar
+
+- Se agregó una segunda sección a la lista para mostrar las etiquetas creadas por el usuario:
+
+```swift
+Section("Tags") {
+    ForEach(tagFilters) { filter in
+        NavigationLink(value: filter) {
+            Label(filter.name, systemImage: filter.icon)
+        }
+    }
+}
+```
+
+De esta forma, la barra lateral puede mostrar tanto filtros inteligentes como filtros basados en etiquetas.
+
+---
+
+#### Botón para crear datos de ejemplo
+
+- Se agregó un botón temporal en la barra de herramientas para borrar los datos actuales y crear datos de ejemplo:
+
+```swift
+.toolbar {
+    Button {
+        dataController.deleteAll()
+        dataController.createSampleData()
+    } label: {
+        Label("ADD SAMPLES", systemImage: "flame")
+    }
+}
+```
+
+Este botón es útil durante el desarrollo porque permite probar rápidamente la interfaz con información realista.
+
+---
+
+#### Resultado de esta sección
+
+- Se configuró la estructura inicial de la interfaz con `NavigationSplitView`.
+- Se crearon filtros inteligentes para mostrar todos los issues y los issues recientes.
+- Se integraron las etiquetas de Core Data como filtros dinámicos.
+- Se conectó la selección del usuario con el `DataController`.
+- Se agregó soporte para datos de prueba mediante `createSampleData()`.
+
+---
+
+#### Próximos pasos
+
+- Mostrar los issues correspondientes al filtro seleccionado.
+- Crear la vista de contenido principal.
+- Crear la vista de detalle de cada issue.
+- Permitir crear nuevas etiquetas desde la interfaz.
+- Implementar búsqueda y ordenamiento de issues.
+```
+
+
+
+
+
+
+
 ---
 
 ### Problemas encontrados
