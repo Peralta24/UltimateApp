@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "08 - Resources/Core Data Research.md",
+                "file": "07 - Dev Log/Dev Log.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Core Data Research"
+              "title": "Dev Log"
             }
           }
         ]
@@ -74,7 +74,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -94,7 +95,7 @@
             "state": {
               "type": "backlink",
               "state": {
-                "file": "08 - Resources/Core Data Research.md",
+                "file": "07 - Dev Log/Dev Log.md",
                 "collapseAll": false,
                 "extraContext": false,
                 "sortOrder": "alphabetical",
@@ -104,7 +105,7 @@
                 "unlinkedCollapsed": true
               },
               "icon": "links-coming-in",
-              "title": "Backlinks for Core Data Research"
+              "title": "Backlinks for Dev Log"
             }
           },
           {
@@ -113,12 +114,12 @@
             "state": {
               "type": "outgoing-link",
               "state": {
-                "file": "08 - Resources/Core Data Research.md",
+                "file": "07 - Dev Log/Dev Log.md",
                 "linksCollapsed": false,
                 "unlinkedCollapsed": true
               },
               "icon": "links-going-out",
-              "title": "Outgoing links from Core Data Research"
+              "title": "Outgoing links from Dev Log"
             }
           },
           {
@@ -156,13 +157,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "08 - Resources/Core Data Research.md",
+                "file": "07 - Dev Log/Dev Log.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Core Data Research"
+              "title": "Outline of Dev Log"
             }
           }
         ]
@@ -183,19 +184,19 @@
       "bases:Create new base": false
     }
   },
-  "active": "25c6fca2aef1abf1",
+  "active": "92171db5e8894639",
   "lastOpenFiles": [
-    "00 - Home/Home.md",
-    "01 - Project/Roadmap.md",
     "08 - Resources/Core Data Research.md",
     "02 - Architecture/Persistence.md",
     "02 - Architecture/Architecture.md",
+    "01 - Project/Roadmap.md",
+    "01 - Project/Overview.md",
+    "05 - Models/Data Models.md",
+    "00 - Home/Home.md",
     "07 - Dev Log/Dev Log.md",
     "03 - Features/Home Feature.md",
     "03 - Features/Cart.md",
     "04 - API/API Overview.md",
-    "05 - Models/Data Models.md",
-    "01 - Project/Overview.md",
     "06 - Decisions/ADR 001 - Project Architecture.md",
     "00 - Home.md",
     "00 - Home",
