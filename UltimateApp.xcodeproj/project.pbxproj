@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXFileReference section */
-		60A1283F2FF53712005ADC17 /* UltimateApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UltimateApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		60A1289E2FF58E35005ADC17 /* UltimateAppApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UltimateAppApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -19,7 +19,7 @@
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		60A1283C2FF53712005ADC17 /* Frameworks */ = {
+		60A1289B2FF58E35005ADC17 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -40,7 +40,7 @@
 		60A128402FF53712005ADC17 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				60A1283F2FF53712005ADC17 /* UltimateApp.app */,
+				60A1289E2FF58E35005ADC17 /* UltimateAppApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -48,14 +48,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		60A1283E2FF53712005ADC17 /* UltimateApp */ = {
+		60A1289D2FF58E35005ADC17 /* UltimateAppApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 60A1284A2FF53713005ADC17 /* Build configuration list for PBXNativeTarget "UltimateApp" */;
+			buildConfigurationList = 60A128A62FF58E36005ADC17 /* Build configuration list for PBXNativeTarget "UltimateAppApp" */;
 			buildPhases = (
-				60A1283B2FF53712005ADC17 /* Sources */,
-				60A1283C2FF53712005ADC17 /* Frameworks */,
-				60A1283D2FF53712005ADC17 /* Resources */,
-				60A1284D2FF53D8D005ADC17 /* ShellScript */,
+				60A1289A2FF58E35005ADC17 /* Sources */,
+				60A1289B2FF58E35005ADC17 /* Frameworks */,
+				60A1289C2FF58E35005ADC17 /* Resources */,
 			);
 			buildRules = (
 			);
@@ -64,11 +63,11 @@
 			fileSystemSynchronizedGroups = (
 				60A128412FF53712005ADC17 /* UltimateApp */,
 			);
-			name = UltimateApp;
+			name = UltimateAppApp;
 			packageProductDependencies = (
 			);
 			productName = UltimateApp;
-			productReference = 60A1283F2FF53712005ADC17 /* UltimateApp.app */;
+			productReference = 60A1289E2FF58E35005ADC17 /* UltimateAppApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -81,7 +80,7 @@
 				LastSwiftUpdateCheck = 2620;
 				LastUpgradeCheck = 2620;
 				TargetAttributes = {
-					60A1283E2FF53712005ADC17 = {
+					60A1289D2FF58E35005ADC17 = {
 						CreatedOnToolsVersion = 26.2;
 					};
 				};
@@ -100,13 +99,13 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				60A1283E2FF53712005ADC17 /* UltimateApp */,
+				60A1289D2FF58E35005ADC17 /* UltimateAppApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		60A1283D2FF53712005ADC17 /* Resources */ = {
+		60A1289C2FF58E35005ADC17 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -115,28 +114,8 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		60A1284D2FF53D8D005ADC17 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "if command -v swiftlint >/dev/null 2>&1; then\n  swiftlint --config \"${SRCROOT}/.swiftlint.yml\" \"${SRCROOT}\"\nelif [ -x /opt/homebrew/bin/swiftlint ]; then\n  /opt/homebrew/bin/swiftlint --config \"${SRCROOT}/.swiftlint.yml\" \"${SRCROOT}\"\nelif [ -x /usr/local/bin/swiftlint ]; then\n  /usr/local/bin/swiftlint --config \"${SRCROOT}/.swiftlint.yml\" \"${SRCROOT}\"\nelse\n  echo \"warning: SwiftLint no está instalado. Ejecuta: brew install swiftlint\"\nfi\n";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
-		60A1283B2FF53712005ADC17 /* Sources */ = {
+		60A1289A2FF58E35005ADC17 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -262,7 +241,7 @@
 			};
 			name = Release;
 		};
-		60A1284B2FF53713005ADC17 /* Debug */ = {
+		60A128A72FF58E36005ADC17 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -273,7 +252,6 @@
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -307,7 +285,7 @@
 			};
 			name = Debug;
 		};
-		60A1284C2FF53713005ADC17 /* Release */ = {
+		60A128A82FF58E36005ADC17 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
@@ -318,7 +296,6 @@
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_HARDENED_RUNTIME = YES;
 				ENABLE_PREVIEWS = YES;
-				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -364,11 +341,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		60A1284A2FF53713005ADC17 /* Build configuration list for PBXNativeTarget "UltimateApp" */ = {
+		60A128A62FF58E36005ADC17 /* Build configuration list for PBXNativeTarget "UltimateAppApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				60A1284B2FF53713005ADC17 /* Debug */,
-				60A1284C2FF53713005ADC17 /* Release */,
+				60A128A72FF58E36005ADC17 /* Debug */,
+				60A128A82FF58E36005ADC17 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -74,8 +74,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -186,13 +185,13 @@
   },
   "active": "25c6fca2aef1abf1",
   "lastOpenFiles": [
+    "05 - Models/Data Models.md",
     "07 - Dev Log/Dev Log.md",
     "08 - Resources/Core Data Research.md",
     "02 - Architecture/Persistence.md",
     "02 - Architecture/Architecture.md",
     "01 - Project/Roadmap.md",
     "01 - Project/Overview.md",
-    "05 - Models/Data Models.md",
     "00 - Home/Home.md",
     "03 - Features/Home Feature.md",
     "03 - Features/Cart.md",

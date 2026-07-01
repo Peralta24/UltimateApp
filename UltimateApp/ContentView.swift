@@ -9,18 +9,11 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        NavigationSplitView {
-            SidebarView()
-        } content: {
-            ContentView()
-        } detail: {
-            DetailView()
-        }
-
+       Text("Content")
     }
 }
 
 #Preview {
     ContentView()
-    
+        .environmentObject(DataController.preview)
 }
