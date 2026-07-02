@@ -451,3 +451,342 @@ Este botón es útil durante el desarrollo porque permite probar rápidamente la
 ---
 
 
+
+
+
+
+
+
+
+
+## 2026-07-02
+
+### Avances
+
+- Se analizó el problema de la opcionalidad en Core Data y la diferencia entre los opcionales de Core Data y los opcionales de Swift.
+- Se comprendió por qué no es recomendable modificar manualmente las clases generadas por Core Data para eliminar los opcionales.
+- Se estudió el funcionamiento de **Codegen** y cómo Xcode genera automáticamente las clases `NSManagedObject`.
+- Se aprendió a crear subclases manuales de `NSManagedObject` mediante **Editor → Create NSManagedObject Subclass**, entendiendo sus ventajas y desventajas.
+- Se decidió mantener la generación automática de clases (`Class Definition`) y resolver la opcionalidad mediante extensiones.
+- Se creó el archivo `Issue-CoreDataHelpers.swift` para encapsular toda la lógica relacionada con las propiedades de `Issue`.
+- Se agregaron propiedades calculadas (`issueTitle`, `issueContent`, `issueCreationDate` e `issueModificationDate`) para evitar utilizar coalescencia de nulos (`??`) en toda la aplicación.
+- Se implementaron getters y setters para facilitar la lectura y escritura de propiedades de Core Data.
+- Se creó una propiedad estática `example` en `Issue` para generar datos de ejemplo utilizando un `DataController` en memoria.
+- Se creó el archivo `Tag-CoreDataHelpers.swift` para centralizar los helpers relacionados con la entidad `Tag`.
+- Se agregaron propiedades calculadas (`tagID` y `tagName`) para eliminar la necesidad de trabajar directamente con opcionales.
+- Se implementó una propiedad estática `example` para generar etiquetas de ejemplo durante las vistas previas de SwiftUI.
+- Se simplificó el manejo de las relaciones entre entidades utilizando propiedades calculadas.
+- Se creó la propiedad `issueTags` para convertir el `NSSet` de etiquetas en un arreglo ordenado de objetos `Tag`.
+- Se implementó la conformidad de `Issue` con el protocolo `Comparable` para ordenar los issues por título y, en caso de empate, por fecha de creación.
+- Se creó la propiedad `tagActiveIssues` para obtener únicamente los issues activos asociados a una etiqueta.
+- Se implementó la conformidad de `Tag` con el protocolo `Comparable` para ordenar las etiquetas por nombre y garantizar un orden estable.
+- Se simplificó `SidebarView` utilizando los nuevos helpers (`tagID`, `tagName` y `tagActiveIssues`).
+- Se agregó un contador (`badge`) que muestra el número de issues activos asociados a cada etiqueta.
+
+---
+
+### Conceptos aprendidos
+
+#### Opcionales en Core Data
+
+- Los atributos marcados como obligatorios en el modelo de Core Data siguen generándose como opcionales en Swift.
+- Core Data únicamente valida los valores obligatorios cuando se guarda el contexto mediante `save()`.
+- Debido a esto, eliminar manualmente los opcionales puede producir comportamientos inesperados.
+
+---
+
+#### Codegen
+
+- `Codegen` es el mecanismo mediante el cual Xcode genera automáticamente las clases `NSManagedObject`.
+- Existen distintos modos de generación, siendo **Class Definition** el recomendado para la mayoría de los proyectos.
+- Cambiar a **Manual/None** permite editar las clases, pero incrementa el mantenimiento del código.
+
+---
+
+#### ¿Por qué no eliminar los opcionales manualmente?
+
+Se identificaron varias desventajas:
+
+- Swift asume que la propiedad siempre tendrá un valor, aunque Core Data aún pueda contener `nil`.
+- Al regenerar las clases, todos los cambios manuales se pierden.
+- Se dificulta aprovechar futuras mejoras realizadas por Apple.
+- Se modifica el comportamiento esperado por Core Data.
+
+Por estas razones se decidió mantener la generación automática y crear extensiones auxiliares.
+
+---
+
+#### Extensiones auxiliares
+
+Las extensiones permiten:
+
+- Centralizar toda la lógica relacionada con Core Data.
+- Eliminar la repetición de código.
+- Evitar escribir `??` constantemente.
+- Mejorar la legibilidad del proyecto.
+- Facilitar el mantenimiento futuro.
+
+---
+
+#### Propiedades calculadas
+
+Se agregaron propiedades calculadas para trabajar con valores seguros:
+
+```swift
+issueTitle
+issueContent
+issueCreationDate
+issueModificationDate
+
+tagID
+tagName
+```
+
+Gracias a ellas, el resto del proyecto ya no necesita preocuparse por la opcionalidad.
+
+---
+
+#### Datos de ejemplo
+
+Se implementaron propiedades estáticas llamadas `example` tanto para `Issue` como para `Tag`.
+
+Estas propiedades crean datos temporales utilizando:
+
+```swift
+DataController(inMemory: true)
+```
+
+Esto facilita:
+
+- SwiftUI Previews.
+- Pruebas rápidas.
+- Desarrollo de la interfaz.
+
+---
+
+#### Relaciones entre entidades
+
+Se aprendió que Core Data almacena las relaciones utilizando `NSSet`.
+
+Sin embargo, trabajar directamente con `NSSet` resulta poco cómodo porque:
+
+- No conoce el tipo de objetos almacenados.
+- Requiere conversiones.
+- Obliga a utilizar opcionales.
+
+Para solucionar esto se crearon propiedades calculadas que convierten esas relaciones en arreglos de Swift.
+
+---
+
+#### issueTags
+
+```swift
+var issueTags: [Tag]
+```
+
+Esta propiedad:
+
+- Convierte el `NSSet` en `[Tag]`.
+- Elimina los opcionales.
+- Ordena automáticamente las etiquetas.
+
+---
+
+#### Comparable
+
+Se implementó el protocolo `Comparable` para ambas entidades.
+
+##### Issue
+
+Los issues se ordenan por:
+
+1. Título.
+2. Fecha de creación.
+
+Esto garantiza un orden consistente en toda la aplicación.
+
+##### Tag
+
+Las etiquetas se ordenan por:
+
+1. Nombre.
+2. UUID (en caso de empate).
+
+Esto evita cambios aleatorios en la interfaz.
+
+---
+
+#### tagActiveIssues
+
+```swift
+var tagActiveIssues: [Issue]
+```
+
+Esta propiedad devuelve únicamente los issues que aún no han sido completados.
+
+Esto facilita mostrar estadísticas y contadores dentro de la interfaz.
+
+---
+
+#### Badge
+
+Se agregó un contador utilizando:
+
+```swift
+.badge(filter.tag?.tagActiveIssues.count ?? 0)
+```
+
+Cada etiqueta muestra automáticamente el número de issues activos asociados.
+
+---
+
+### Código importante
+
+#### Helpers para Issue
+
+```swift
+extension Issue {
+
+    var issueTitle: String {
+        get { title ?? "" }
+        set { title = newValue }
+    }
+
+    var issueContent: String {
+        get { content ?? "" }
+        set { content = newValue }
+    }
+
+    var issueCreationDate: Date {
+        creationDate ?? .now
+    }
+
+    var issueModificationDate: Date {
+        modificationDate ?? .now
+    }
+
+}
+```
+
+---
+
+#### Issue de ejemplo
+
+```swift
+static var example: Issue
+```
+
+---
+
+#### Helpers para Tag
+
+```swift
+extension Tag {
+
+    var tagID: UUID {
+        id ?? UUID()
+    }
+
+    var tagName: String {
+        name ?? ""
+    }
+
+}
+```
+
+---
+
+#### Tag de ejemplo
+
+```swift
+static var example: Tag
+```
+
+---
+
+#### Conversión de NSSet a Array
+
+```swift
+var issueTags: [Tag]
+```
+
+---
+
+#### Issues activos
+
+```swift
+var tagActiveIssues: [Issue]
+```
+
+---
+
+#### Comparable para Issue
+
+```swift
+extension Issue: Comparable
+```
+
+Ordena por título y fecha de creación.
+
+---
+
+#### Comparable para Tag
+
+```swift
+extension Tag: Comparable
+```
+
+Ordena por nombre y UUID.
+
+---
+
+#### Badge
+
+```swift
+.badge(filter.tag?.tagActiveIssues.count ?? 0)
+```
+
+---
+
+### Problemas encontrados
+
+- Comprender la diferencia entre la opcionalidad de Core Data y la de Swift.
+- Entender por qué las propiedades siguen siendo opcionales aunque el modelo indique que son obligatorias.
+- Comprender el funcionamiento de `Codegen`.
+- Trabajar con relaciones representadas mediante `NSSet`.
+- Convertir correctamente `NSSet` a arreglos tipados.
+- Garantizar un orden consistente de entidades mediante `Comparable`.
+
+---
+
+### Recursos utilizados
+
+- 100 Days of SwiftUI.
+- Documentación oficial de Apple sobre Core Data. :contentReference[oaicite:0]{index=0}
+- Xcode 26.
+- SwiftUI.
+- Core Data.
+
+---
+
+### Notas personales
+
+- Es preferible encapsular la lógica de Core Data mediante extensiones en lugar de modificar las clases generadas automáticamente.
+- Centralizar la resolución de opcionales hace que el resto del proyecto sea mucho más limpio.
+- `NSSet` funciona correctamente, pero es recomendable transformarlo a arreglos tipados antes de utilizarlo.
+- Implementar `Comparable` permite mantener un orden consistente en toda la interfaz.
+- Las propiedades `example` facilitan enormemente el trabajo con SwiftUI Previews.
+- Utilizar helpers hace que el código sea más mantenible y escalable.
+
+---
+
+### Próximos pasos
+
+- Mostrar los issues correspondientes al filtro seleccionado.
+- Implementar la vista principal de contenido (`ContentView`).
+- Crear la vista de detalle de un issue.
+- Implementar la edición de issues.
+- Agregar creación y eliminación de etiquetas desde la interfaz.
+- Implementar búsqueda utilizando `NSPredicate`.
+- Agregar ordenamiento dinámico de resultados.
+```
