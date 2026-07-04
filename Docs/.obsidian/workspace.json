@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "04b8ea1d0f349f17",
+        "id": "c9988048263026bf",
         "type": "tabs",
         "children": [
           {
-            "id": "25c6fca2aef1abf1",
+            "id": "9b43f60e1f996fb1",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "07 - Dev Log/Dev Log.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Dev Log"
+              "title": "New tab"
             }
           }
         ]
@@ -74,7 +70,8 @@
               "title": "Bookmarks"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "horizontal",
@@ -183,10 +180,10 @@
       "bases:Create new base": false
     }
   },
-  "active": "25c6fca2aef1abf1",
+  "active": "9b43f60e1f996fb1",
   "lastOpenFiles": [
-    "05 - Models/Data Models.md",
     "07 - Dev Log/Dev Log.md",
+    "05 - Models/Data Models.md",
     "08 - Resources/Core Data Research.md",
     "02 - Architecture/Persistence.md",
     "02 - Architecture/Architecture.md",
