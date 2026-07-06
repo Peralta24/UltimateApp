@@ -748,3 +748,306 @@ Ordena por nombre y UUID.
 
 ---
 
+
+
+
+## 2026-07-04
+### Avances
+
+- Se corrigieron dos aspectos importantes del proyecto:
+  - Se cambió `@State` por `@StateObject` para que `DataController` permanezca vivo durante todo el ciclo de vida de la aplicación.
+  - Se actualizó el método `delete()` para notificar a SwiftUI antes de eliminar un objeto utilizando `objectWillChange.send()`.
+- Se comenzó la implementación de la lógica para mostrar los issues según el filtro seleccionado en la barra lateral.
+- Se agregó `DataController` como `EnvironmentObject` dentro de `ContentView`.
+- Se creó una propiedad calculada llamada `issues`, encargada de obtener automáticamente los issues según el filtro activo.
+- Se implementó la lógica para diferenciar entre filtros inteligentes y filtros basados en etiquetas (`Tag`).
+- Se incorporó un `NSPredicate` para mostrar únicamente los issues modificados después de una fecha determinada, permitiendo el funcionamiento del filtro **Recent Issues**.
+- Se comenzó la construcción de la interfaz principal mostrando todos los issues mediante un `List` y `ForEach`.
+- Se creó una nueva vista llamada `IssueRow` para representar visualmente cada issue dentro de la lista.
+- Se diseñó una fila personalizada que muestra:
+  - Prioridad del issue.
+  - Título.
+  - Etiquetas.
+  - Fecha de creación.
+  - Estado (abierto o cerrado).
+- Se implementó navegación utilizando `NavigationLink`, preparando la futura vista de detalle de cada issue.
+- Se agregó soporte para eliminar etiquetas desde `SidebarView`.
+- Se agregó soporte para eliminar issues desde `ContentView`.
+- Se configuró Core Data para sincronizar automáticamente los cambios provenientes de otros dispositivos mediante CloudKit.
+- Se habilitó la fusión automática de cambios utilizando `automaticallyMergesChangesFromParent`.
+- Se configuró una política de fusión (`mergePolicy`) para resolver conflictos cuando existen cambios simultáneos entre dispositivos.
+- Se implementó un observador para detectar cambios remotos del almacenamiento persistente y actualizar automáticamente la interfaz de usuario.
+
+---
+
+### Conceptos aprendidos
+
+#### @StateObject
+
+- `DataController` debe declararse como `@StateObject` para garantizar que exista una única instancia durante toda la ejecución de la aplicación.
+- Utilizar `@State` provocaría que el controlador pudiera recrearse inesperadamente.
+
+---
+
+#### objectWillChange
+
+- Antes de modificar los datos es recomendable notificar a SwiftUI mediante:
+
+```swift
+objectWillChange.send()
+```
+
+- Esto asegura que la interfaz se actualice correctamente cuando un objeto sea eliminado.
+
+---
+
+#### Filtros dinámicos
+
+Se creó una propiedad calculada:
+
+```swift
+var issues: [Issue]
+```
+
+Su responsabilidad es:
+
+- Obtener el filtro seleccionado.
+- Determinar si el filtro corresponde a una etiqueta o a un filtro inteligente.
+- Recuperar únicamente los issues que deben mostrarse.
+
+Esto centraliza toda la lógica relacionada con Core Data en un solo lugar.
+
+---
+
+#### NSPredicate
+
+Para el filtro **Recent Issues** se utilizó un predicado:
+
+```swift
+request.predicate = NSPredicate(
+    format: "modificationDate > %@",
+    filter.minModificationDate as NSDate
+)
+```
+
+Este predicado permite que Core Data devuelva únicamente los issues modificados después de una fecha específica.
+
+Se aprendió que Core Data trabaja con `NSDate`, por lo que es necesario convertir `Date` antes de utilizarlo en un predicado.
+
+---
+
+#### FetchRequest
+
+Se utilizó un `FetchRequest` para recuperar los issues almacenados.
+
+Cuando el filtro corresponde a una etiqueta:
+
+- Los issues se obtienen directamente desde la relación `Tag`.
+
+Cuando el filtro corresponde a un filtro inteligente:
+
+- Se ejecuta una consulta (`fetch`) sobre Core Data.
+
+---
+
+#### IssueRow
+
+Se creó una vista independiente llamada `IssueRow`.
+
+Separar la interfaz en componentes reutilizables permite:
+
+- Mejor organización del proyecto.
+- Código más limpio.
+- Reutilización en diferentes vistas.
+
+Cada fila muestra:
+
+- Prioridad.
+- Título.
+- Etiquetas.
+- Fecha de creación.
+- Estado del issue.
+
+---
+
+#### NavigationLink
+
+Cada issue se encuentra envuelto dentro de un:
+
+```swift
+NavigationLink
+```
+
+Esto permitirá navegar posteriormente hacia la vista de detalle correspondiente.
+
+---
+
+#### Eliminación de registros
+
+Se agregó soporte para eliminar información utilizando:
+
+```swift
+.onDelete()
+```
+
+Esto permite deslizar una fila y eliminar:
+
+- Issues.
+- Tags.
+
+Toda la eliminación continúa siendo administrada por `DataController`.
+
+---
+
+#### Sincronización automática
+
+Se habilitó:
+
+```swift
+container.viewContext.automaticallyMergesChangesFromParent = true
+```
+
+Con esto, el `viewContext` se mantiene sincronizado automáticamente con los cambios provenientes del almacenamiento persistente.
+
+---
+
+#### Merge Policy
+
+Se configuró:
+
+```swift
+NSMergePolicy.mergeByPropertyObjectTrump
+```
+
+Esta política permite fusionar automáticamente cambios realizados desde distintos dispositivos.
+
+Si dos dispositivos modifican propiedades diferentes del mismo objeto:
+
+- Core Data conserva ambas modificaciones.
+
+Si ambos modifican exactamente la misma propiedad:
+
+- Se mantiene el valor del objeto actualmente cargado en memoria.
+
+---
+
+#### Cambios remotos
+
+Se aprendió a detectar cambios provenientes de CloudKit mediante:
+
+```swift
+NotificationCenter
+```
+
+Cada vez que el almacenamiento persistente cambia, se ejecuta:
+
+```swift
+remoteStoreChanged()
+```
+
+Este método notifica a SwiftUI para actualizar automáticamente la interfaz sin necesidad de reiniciar la aplicación.
+
+---
+
+### Código importante
+
+#### Obtener los issues
+
+```swift
+var issues: [Issue]
+```
+
+---
+
+#### Filtrar mediante NSPredicate
+
+```swift
+request.predicate = NSPredicate(
+    format: "modificationDate > %@",
+    filter.minModificationDate as NSDate
+)
+```
+
+---
+
+#### Crear IssueRow
+
+```swift
+struct IssueRow: View
+```
+
+---
+
+#### Eliminar registros
+
+```swift
+.onDelete()
+```
+
+---
+
+#### Sincronización automática
+
+```swift
+container.viewContext.automaticallyMergesChangesFromParent = true
+```
+
+---
+
+#### Política de fusión
+
+```swift
+container.viewContext.mergePolicy =
+NSMergePolicy.mergeByPropertyObjectTrump
+```
+
+---
+
+#### Detectar cambios remotos
+
+```swift
+NotificationCenter.default.addObserver(...)
+```
+
+---
+
+### Problemas encontrados
+
+- Comprender cuándo utilizar un filtro inteligente y cuándo utilizar una etiqueta.
+- Entender el funcionamiento de `NSPredicate`.
+- Comprender cómo Core Data realiza consultas utilizando `FetchRequest`.
+- Entender cómo sincronizar automáticamente los cambios provenientes de CloudKit.
+- Comprender cómo resolver conflictos cuando dos dispositivos modifican el mismo objeto.
+
+---
+
+### Recursos utilizados
+
+- 100 Days of SwiftUI.
+- Documentación oficial de Apple sobre Core Data. :contentReference[oaicite:0]{index=0}
+- Xcode 26.
+- SwiftUI.
+- Core Data.
+- CloudKit.
+
+---
+
+### Notas personales
+
+- Toda la lógica relacionada con Core Data debe permanecer dentro del `DataController`.
+- Las vistas únicamente deberían encargarse de mostrar la información.
+- Separar componentes como `IssueRow` facilita enormemente el mantenimiento del proyecto.
+- `NSPredicate` es una herramienta fundamental para realizar consultas eficientes en Core Data.
+- Configurar correctamente la sincronización con CloudKit desde el inicio evita muchos problemas cuando la aplicación crece.
+
+---
+
+### Próximos pasos
+
+- Implementar la vista de detalle de un issue.
+- Editar información desde la interfaz.
+- Crear nuevos issues.
+- Crear nuevas etiquetas.
+- Implementar búsqueda avanzada utilizando `NSPredicate`.
+- Agregar ordenamiento dinámico mediante `SortDescriptor`.
+- Mejorar la sincronización entre dispositivos utilizando CloudKit.

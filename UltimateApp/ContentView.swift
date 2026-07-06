@@ -7,9 +7,10 @@
 
 import SwiftUI
 internal import CoreData
+internal import Combine
 
 struct ContentView: View {
-     @EnvironmentObject var dataController: DataController
+    @EnvironmentObject var dataController: DataController
     
     var issue: [Issue] {
         let filter = dataController.selectedFilter ?? .all
@@ -26,7 +27,7 @@ struct ContentView: View {
         return allIssues.sorted()
     }
     var body: some View {
-        List {
+        List(selection: $dataController.selectedIssue) {
             ForEach(issue) { issue in
                 IssueRow(issue: issue)
             }
