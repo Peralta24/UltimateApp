@@ -74,8 +74,7 @@
               "title": "Bookmarks"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "horizontal",
@@ -184,7 +183,7 @@
       "bases:Create new base": false
     }
   },
-  "active": "9b43f60e1f996fb1",
+  "active": "f54aae9e30572ca3",
   "lastOpenFiles": [
     "07 - Dev Log/Dev Log.md",
     "05 - Models/Data Models.md",
